@@ -47,6 +47,14 @@ public class DeathInfo {
 				"\nVictim position >> (" + victimXPosition + ", " + victimYPosition + ")\n");
 	}
 
+	public String getKName() {
+		return this.killerName;
+	}
+	
+	public String getVName() {
+		return this.victimName;
+	}
+	
 	public String getType() {
 		return this.deathType;
 	}
@@ -97,12 +105,12 @@ public class DeathInfo {
 	}
 	
 	public String convertToCSVcompact() {
-		String csvLine = this.deathType +  
-				"," + this.killerXPosition +
+		String csvLine = this.killerXPosition +  
 				"," + this.killerYPosition +
-				"," + this.victimXPosition +
-				"," + this.victimYPosition +
-				//"," + this.killDistance + 
+				"," + this.killDistance +
+				//"," + this.victimXPosition +
+				//"," + this.victimYPosition +
+				"," + this.deathType + 
 				//"," + convertToCoord() + 
 				"\n"; 
 		return csvLine;

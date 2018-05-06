@@ -66,6 +66,9 @@ public class DataManipulator {
 					String map = record[5];
 					int time = Integer.parseInt(record[7]);
 					String kType = record[0];
+					if(kType.equals("death.WeapSawnoff_C")) {
+						kType = "Sawed-Off";
+					}
 					String kName = record[1];
 					Double kXPos = Math.abs(Double.parseDouble(record[3]));
 					Double kYPos = Math.abs(Double.parseDouble(record[4]));
@@ -108,6 +111,8 @@ public class DataManipulator {
 		*/
 		writerE.close();
 		writerM.close();
+		writerMFocused.close();
+		writerEFocused.close();
 		for(i = 15; i >= 0; i--) {
 			for(int j = 0; j < 16; j++) {
 				System.out.printf("%7d" , coordCountM[i][j]);
@@ -119,10 +124,33 @@ public class DataManipulator {
 	}
 	
 	public static boolean checkEntry(DeathInfo entry) {
-		if((entry.getvX() == 0 && entry.getvY() == 0) || (entry.getkX() == 0 && entry.getkY() == 0)) {
+		if((entry.getvX() == 0 && entry.getvY() == 0) || (entry.getkX() == 0 && entry.getkY() == 0) || isWeapon(entry.getType())) {
+			return false;
+		} else if(entry.getKName().equals(entry.getVName())) {
 			return false;
 		}
 		return true;
+	}
+	
+	public static boolean isWeapon(String weapon) {
+		if(weapon.equals("Down and Out") || 
+				weapon.equals("Hit by Car") || 
+				weapon.equals("Bluezone") || 
+				weapon.equals("Falling") || 
+				weapon.equals("Motorbike (SideCar)") || 
+				weapon.equals("Buggy") || 
+				weapon.equals("Van") || 
+				weapon.equals("Drown") || 
+				weapon.equals("RedZone") || 
+				weapon.equals("Pickup Truck") || 
+				weapon.equals("Motorbike") || 
+				weapon.equals("death.RedZoneBomb_C") || 
+				weapon.equals("Aquarail") || 
+				weapon.equals("death.Buff_FireDOT_C") ||
+				weapon.equals("Punch")) {
+			return true;
+		}
+		return false;
 	}
 	
 	public static void addToFile(int count, String entry, String mapCode, DeathInfo death) {
