@@ -27,8 +27,8 @@ public class DeathInfo {
 	}
 	
 	public double distanceCalc(double kX, double kY, double vX, double vY) {
-		
-		double distance = Math.sqrt(Math.pow(vX/1000 - kX/1000, 2) + Math.pow(vY/1000 - kY/1000,  2));
+		int conversion = 100;
+		double distance = Math.sqrt(Math.pow(vX/conversion - kX/conversion, 2) + Math.pow(vY/conversion - kY/conversion,  2));
 		if(this.deathType.equals("Drown") || this.deathType.equals("Bluezone") || this.deathType.equals("Redzone")) {
 			distance = 0;
 		}
@@ -51,12 +51,24 @@ public class DeathInfo {
 		return this.deathType;
 	}
 	
-	public double getX() {
+	public double getvX() {
 		return this.victimXPosition;
 	}
 	
-	public double getY() {
+	public double getvY() {
 		return this.victimYPosition;
+	}
+	
+	public double getkX() {
+		return this.killerXPosition;
+	}
+	
+	public double getkY() {
+		return this.killerYPosition;
+	}
+	
+	public double getDist() {
+		return this.killDistance;
 	}
 	
 	public String convertToCoord() {
@@ -86,10 +98,12 @@ public class DeathInfo {
 	
 	public String convertToCSVcompact() {
 		String csvLine = this.deathType +  
+				"," + this.killerXPosition +
+				"," + this.killerYPosition +
 				"," + this.victimXPosition +
 				"," + this.victimYPosition +
-				"," + this.killDistance + 
-				"," + convertToCoord() + 
+				//"," + this.killDistance + 
+				//"," + convertToCoord() + 
 				"\n"; 
 		return csvLine;
 	}

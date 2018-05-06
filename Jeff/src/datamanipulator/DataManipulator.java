@@ -48,6 +48,7 @@ public class DataManipulator {
 		HashMap<String, ArrayList<DeathInfo>> erangel = new HashMap<String, ArrayList<DeathInfo>>();
 		ArrayList<DeathInfo> deathMira = new ArrayList<DeathInfo>();
 		ArrayList<DeathInfo> deathEran = new ArrayList<DeathInfo>();
+		double maxDist = 0;
 		int i = 0, counter = 0, counter2 = 0;
 		//for(i = 0; i < 5; i++) {
 			String fileName = retrieveFile(i);
@@ -72,14 +73,17 @@ public class DataManipulator {
 					Double vXPos = Math.abs(Double.parseDouble(record[10]));
 					Double vYPos = Math.abs(Double.parseDouble(record[11]));
 					DeathInfo entry = new DeathInfo(kType, kName, kXPos, kYPos, time, vName, vXPos, vYPos);
-					if(map.equals("MIRAMAR") && counter < 1000000) {
+					if(checkEntry(entry) && map.equals("MIRAMAR") && counter < 1000000) {
 						/*
 						deathMira.add(entry);
 						miramar.put(kType, deathMira);
 						*/
 						addToFile(counter, line, "M", entry);
+						if(maxDist < entry.getDist()) {
+							maxDist = entry.getDist();
+						}
 						counter++;
-					} else if(map.equals("ERANGEL") && counter2 < 1000000){
+					} else if(checkEntry(entry) && map.equals("ERANGEL") && counter2 < 1000000){
 						/*
 						deathEran.add(entry);
 						erangel.put(kType, deathEran);
@@ -110,7 +114,15 @@ public class DataManipulator {
 			}
 			System.out.print("\n");
 		}
+		System.out.printf("Maximum kill distance: %6.1f\n", maxDist);
 		System.out.println("PROGRAM END");
+	}
+	
+	public static boolean checkEntry(DeathInfo entry) {
+		if((entry.getvX() == 0 && entry.getvY() == 0) || (entry.getkX() == 0 && entry.getkY() == 0)) {
+			return false;
+		}
+		return true;
 	}
 	
 	public static void addToFile(int count, String entry, String mapCode, DeathInfo death) {
@@ -119,6 +131,7 @@ public class DataManipulator {
 		if(mapCode.equals("M")) {
 			writerM.write(entry);
 			writerMFocused.write(output);
+			/*
 			String[] temp = output.trim().split(",");
 			String coord = temp[temp.length-1];
 			char letter = coord.charAt(0);
@@ -127,6 +140,7 @@ public class DataManipulator {
 			int yCoord = Integer.parseInt(num) - 1;
 			//System.out.println(count + " : " + output + " - " + xCoord + " " + yCoord);
 			coordCountM[xCoord][yCoord]++;
+			*/
 			globalM++;
 		} else if (mapCode.equals("E")) {
 			writerE.write(entry);
